@@ -1,3 +1,7 @@
+######################
+# modified line 83 for Tensorflow 0.21.1 background
+######################
+
 """An implementation of the improved WGAN described in https://arxiv.org/abs/1704.00028
 
 The improved WGAN has a term in the loss function which penalizes the network if its gradient
@@ -79,9 +83,10 @@ def gradient_penalty_loss(y_true, y_pred, averaged_samples, gradient_penalty_wei
     gradients = K.gradients(y_pred, averaged_samples)[0]
     # compute the euclidean norm by squaring ...
     gradients_sqr = K.square(gradients)
-    #   ... summing over the rows ...
+    #   ... summing over the rows ...    
     gradients_sqr_sum = K.sum(gradients_sqr,
-                              axis=np.arange(1, len(gradients_sqr.shape)))
+                              axis=np.arange(1, len(gradients_sqr.get_shape())))    
+    
     #   ... and sqrt
     gradient_l2_norm = K.sqrt(gradients_sqr_sum)
     # compute lambda * (1 - ||grad||)^2 still for each single sample
